@@ -1,0 +1,156 @@
+/* line 27, ../sass/cutshort.scss */
+a:hover {
+  text-decoration: none;
+}
+
+/* line 34, ../sass/cutshort.scss */
+h1, h2, h3, h4 {
+  margin-bottom: 0;
+}
+
+/* line 39, ../sass/cutshort.scss */
+.front .page-header {
+  display: none;
+  height: 40px;
+}
+
+/* line 44, ../sass/cutshort.scss */
+.page-header {
+  margin-bottom: 20px;
+}
+
+/* line 49, ../sass/cutshort.scss */
+.key {
+  border: 1px solid #aaaaaa;
+  padding: 10px;
+  font-size: 30px;
+  height: 45px;
+  width: 45px;
+  line-height: 45px;
+  display: inline-block;
+  text-align: center;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+}
+
+/* line 61, ../sass/cutshort.scss */
+.separator {
+  line-height: 45px;
+  position: relative;
+  top: -5px;
+  padding: 0 5px;
+  font-size: 20px;
+  line-height: 45px;
+}
+
+/* line 73, ../sass/cutshort.scss */
+#block-views-shortcut-block .views-row {
+  border: 1px solid #aaaaaa;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px 20px 20px 20px;
+  margin: 20px 0;
+}
+/* line 74, ../sass/cutshort.scss */
+#block-views-shortcut-block .views-row h3 {
+  margin: 0;
+}
+/* line 81, ../sass/cutshort.scss */
+#block-views-shortcut-block .views-row .views-field-created {
+  color: #aaaaaa;
+  margin-bottom: 10px;
+}
+/* line 85, ../sass/cutshort.scss */
+#block-views-shortcut-block .views-row .views-field-field-shortcut-application {
+  margin-top: 10px;
+}
+
+/* line 94, ../sass/cutshort.scss */
+.node-type-shortcut .field-name-field-shortcut-application {
+  margin-top: 10px;
+}
+
+/* line 102, ../sass/cutshort.scss */
+.node-type-application .view-id-application .views-row {
+  border: 1px solid #aaaaaa;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px 20px 20px 20px;
+  margin: 20px 0;
+}
+/* line 6, ../sass/cutshort.scss */
+.node-type-application .view-id-application .views-row h3 {
+  margin: 0;
+}
+/* line 13, ../sass/cutshort.scss */
+.node-type-application .view-id-application .views-row .views-field-created {
+  color: #aaaaaa;
+  margin-bottom: 10px;
+}
+/* line 17, ../sass/cutshort.scss */
+.node-type-application .view-id-application .views-row .views-field-field-shortcut-application {
+  margin-top: 10px;
+}
+/* line 104, ../sass/cutshort.scss */
+.node-type-application .view-id-application .views-row h4 {
+  margin-bottom: 10px;
+}
+
+/* line 112, ../sass/cutshort.scss */
+.node-type-key .field-name-field-key-symbol {
+  font-size: 100px;
+  line-height: 100px;
+  color: #dddddd;
+  float: right;
+}
+/* line 118, ../sass/cutshort.scss */
+.node-type-key .view-id-key {
+  margin-top: 60px;
+}
+/* line 120, ../sass/cutshort.scss */
+.node-type-key .view-id-key .views-row {
+  border: 1px solid #aaaaaa;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px 20px 20px 20px;
+  margin: 20px 0;
+}
+/* line 6, ../sass/cutshort.scss */
+.node-type-key .view-id-key .views-row h3 {
+  margin: 0;
+}
+/* line 13, ../sass/cutshort.scss */
+.node-type-key .view-id-key .views-row .views-field-created {
+  color: #aaaaaa;
+  margin-bottom: 10px;
+}
+/* line 17, ../sass/cutshort.scss */
+.node-type-key .view-id-key .views-row .views-field-field-shortcut-application {
+  margin-top: 10px;
+}
+/* line 122, ../sass/cutshort.scss */
+.node-type-key .view-id-key .views-row h4 {
+  margin-bottom: 10px;
+}
+/* line 125, ../sass/cutshort.scss */
+.node-type-key .view-id-key .views-row.views-row-first {
+  margin-top: 10px;
+}
+
+/* line 133, ../sass/cutshort.scss */
+#block-views-key-block-1 .views-row {
+  float: left;
+  margin-right: 10px;
+}

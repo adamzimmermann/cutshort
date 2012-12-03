@@ -1,0 +1,23 @@
+name = CutShort
+description = Built to use Bootstrap, a sleek, intuitive, and powerful front-end framework for faster and easier web development.
+base theme  = bootstrap
+core = 7.x
+
+regions[header]         = 'Top Bar'
+regions[highlighted]    = 'Highlighted'
+regions[help]           = 'Help'
+regions[content]        = 'Content'
+regions[sidebar_first]  = 'Primary'
+regions[sidebar_second] = 'Secondary'
+regions[footer]         = 'Footer'
+
+stylesheets[all][] = css/cutshort.css
+
+settings[toggle_name] = 0
+settings[toggle_search] = 1
+settings[cdn_bootstrap] = 0
+settings[cdn_jquery] = 0
+
+
+
+

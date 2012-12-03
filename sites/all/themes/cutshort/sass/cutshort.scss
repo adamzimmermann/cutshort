@@ -1,0 +1,137 @@
+
+@import "base";
+
+
+@mixin shortcuts() {
+	h3 {
+		margin: 0;
+	}
+	border: 1px solid $grey-medium;
+	@include border-radius(10px);
+	padding: 10px 20px 20px 20px;
+	margin: 20px 0;
+	.views-field-created {
+		color: $grey-medium;
+		margin-bottom: 10px;
+	}
+	.views-field-field-shortcut-application {
+		margin-top: 10px;
+	}
+}
+
+
+$grey-light: #DDD;
+$grey-medium: #AAA;
+
+a {
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+
+
+h1, h2, h3, h4 {
+	margin-bottom: 0;
+}
+
+.front {
+	.page-header {
+		display: none;
+		height: 40px;
+	}
+}
+.page-header {
+	margin-bottom: 20px;
+}
+
+
+.key {
+	border: 1px solid $grey-medium;
+	padding: 10px;
+	font-size: 30px;
+	height: 45px;
+	width: 45px;
+	line-height: 45px;
+	display: inline-block;
+	text-align: center;
+	@include border-radius(10px);
+
+}
+.separator {
+	line-height: 45px;
+	position: relative;
+	top: -5px;
+	padding: 0 5px;
+	font-size: 20px;
+	line-height: 45px;
+}
+
+
+#block-views-shortcut-block {
+
+	.views-row {
+		h3 {
+			margin: 0;
+		}
+		border: 1px solid $grey-medium;
+		@include border-radius(10px);
+		padding: 10px 20px 20px 20px;
+		margin: 20px 0;
+		.views-field-created {
+			color: $grey-medium;
+			margin-bottom: 10px;
+		}
+		.views-field-field-shortcut-application {
+			margin-top: 10px;
+		}
+	}
+}
+
+
+.node-type-shortcut {
+
+	.field-name-field-shortcut-application {
+		margin-top: 10px;
+	}
+}
+
+
+.node-type-application {
+	.view-id-application {
+		.views-row {
+			@include shortcuts();
+			h4 {
+				margin-bottom: 10px;
+			}
+		}
+	}
+}
+
+.node-type-key {
+	.field-name-field-key-symbol {
+		font-size: 100px;
+		line-height: 100px;
+		color: $grey-light;
+		float: right;
+	}
+	.view-id-key {
+		margin-top: 60px;
+		.views-row {
+			@include shortcuts();
+			h4 {
+				margin-bottom: 10px;
+			}
+			&.views-row-first {
+				margin-top: 10px;
+			}
+		}
+	}
+}
+
+#block-views-key-block-1 {
+	.views-row {
+		float: left;
+		margin-right: 10px;
+	}
+}

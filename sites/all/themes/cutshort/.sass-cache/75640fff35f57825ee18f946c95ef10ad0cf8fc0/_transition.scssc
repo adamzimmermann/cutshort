@@ -1,0 +1,1266 @@
+3.3.0.alpha.50 (Bleeding Edge)
+77c479240b27e28f77813fb2a5017cc40bf3e30c
+o:Sass::Tree::RootNode:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei:@offseti:@start_poso;
+;i;i:@template"¤ @import "shared";
+
+// CSS Transitions
+// Currently only works in Webkit.
+//
+// * expected in CSS3, FireFox 3.6/7 and Opera Presto 2.3
+// * We'll be prepared.
+//
+// Including this submodule sets following defaults for the mixins:
+//
+//     $default-transition-property : all
+//     $default-transition-duration : 1s
+//     $default-transition-function : false
+//     $default-transition-delay    : false
+//
+// Override them if you like. Timing-function and delay are set to false for browser defaults (ease, 0s).
+
+$default-transition-property: all !default;
+
+$default-transition-duration: 1s !default;
+
+$default-transition-function: false !default;
+
+$default-transition-delay: false !default;
+
+$transitionable-prefixed-values: transform, transform-origin !default;
+
+// One or more properties to transition
+//
+// * for multiple, use a comma-delimited list
+// * also accepts "all" or "none"
+
+@mixin transition-property($property-1: $default-transition-property,
+  $property-2 : false,
+  $property-3 : false,
+  $property-4 : false,
+  $property-5 : false,
+  $property-6 : false,
+  $property-7 : false,
+  $property-8 : false,
+  $property-9 : false,
+  $property-10: false
+) {
+  @if type-of($property-1) == string { $property-1: unquote($property-1); }
+  $properties: compact($property-1, $property-2, $property-3, $property-4, $property-5, $property-6, $property-7, $property-8, $property-9, $property-10);
+  @if $experimental-support-for-webkit    {       -webkit-transition-property : prefixed-for-transition(-webkit, $properties); }
+  @if $experimental-support-for-mozilla   {          -moz-transition-property : prefixed-for-transition(-moz,    $properties); }
+  @if $experimental-support-for-opera     {            -o-transition-property : prefixed-for-transition(-o,      $properties); }
+                                                          transition-property : $properties;
+}
+
+// One or more durations in seconds
+//
+// * for multiple, use a comma-delimited list
+// * these durations will affect the properties in the same list position
+
+@mixin transition-duration($duration-1: $default-transition-duration,
+  $duration-2 : false,
+  $duration-3 : false,
+  $duration-4 : false,
+  $duration-5 : false,
+  $duration-6 : false,
+  $duration-7 : false,
+  $duration-8 : false,
+  $duration-9 : false,
+  $duration-10: false
+) {
+  @if type-of($duration-1) == string { $duration-1: unquote($duration-1); }
+  $durations: compact($duration-1, $duration-2, $duration-3, $duration-4, $duration-5, $duration-6, $duration-7, $duration-8, $duration-9, $duration-10);
+  @include experimental(transition-duration, $durations,
+    -moz, -webkit, -o, not -ms, not -khtml, official
+  );
+}
+
+// One or more timing functions
+//
+// * [ ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(x1, y1, x2, y2)]
+// * For multiple, use a comma-delimited list
+// * These functions will effect the properties in the same list position
+
+@mixin transition-timing-function($function-1: $default-transition-function,
+  $function-2 : false,
+  $function-3 : false,
+  $function-4 : false,
+  $function-5 : false,
+  $function-6 : false,
+  $function-7 : false,
+  $function-8 : false,
+  $function-9 : false,
+  $function-10: false
+) {
+  $function-1: unquote($function-1);
+  $functions: compact($function-1, $function-2, $function-3, $function-4, $function-5, $function-6, $function-7, $function-8, $function-9, $function-10);
+  @include experimental(transition-timing-function, $functions,
+    -moz, -webkit, -o, not -ms, not -khtml, official
+  );
+}
+
+// One or more transition-delays in seconds
+//
+// * for multiple, use a comma-delimited list
+// * these delays will effect the properties in the same list position
+
+@mixin transition-delay($delay-1: $default-transition-delay,
+  $delay-2 : false,
+  $delay-3 : false,
+  $delay-4 : false,
+  $delay-5 : false,
+  $delay-6 : false,
+  $delay-7 : false,
+  $delay-8 : false,
+  $delay-9 : false,
+  $delay-10: false
+) {
+  @if type-of($delay-1) == string { $delay-1: unquote($delay-1); }
+  $delays: compact($delay-1, $delay-2, $delay-3, $delay-4, $delay-5, $delay-6, $delay-7, $delay-8, $delay-9, $delay-10);
+  @include experimental(transition-delay, $delays,
+    -moz, -webkit, -o, not -ms, not -khtml, official
+  );
+}
+
+// Transition all-in-one shorthand
+
+@mixin single-transition(
+  $property: $default-transition-property,
+  $duration: $default-transition-duration,
+  $function: $default-transition-function,
+  $delay: $default-transition-delay
+) {
+  @include transition(compact($property $duration $function $delay));
+}
+
+@mixin transition(
+  $transition-1 : default,
+  $transition-2 : false,
+  $transition-3 : false,
+  $transition-4 : false,
+  $transition-5 : false,
+  $transition-6 : false,
+  $transition-7 : false,
+  $transition-8 : false,
+  $transition-9 : false,
+  $transition-10: false
+) {
+  @if $transition-1 == default {
+    $transition-1 : compact($default-transition-property $default-transition-duration $default-transition-function $default-transition-delay);
+  }
+  $transitions: false;
+  @if type-of($transition-1) == list and type-of(nth($transition-1,1)) == list {
+    $transitions: join($transition-1, compact($transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10), comma);
+  } @else {
+    $transitions : compact($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10);
+  }
+  $delays: comma-list();
+  $has-delays: false;
+  $webkit-value: comma-list();
+  $moz-value: comma-list();
+  $o-value: comma-list();
+
+  // This block can be made considerably simpler at the point in time that
+  // we no longer need to deal with the differences in how delays are treated.
+  @each $transition in $transitions {
+    // Extract the values from the list
+    // (this would be cleaner if nth took a 3rd argument to provide a default value).
+    $property: nth($transition, 1);
+    $duration: false;
+    $timing-function: false;
+    $delay: false;
+    @if length($transition) > 1 { $duration:        nth($transition, 2); }
+    @if length($transition) > 2 { $timing-function: nth($transition, 3); }
+    @if length($transition) > 3 { $delay:           nth($transition, 4); $has-delays: true; }
+
+    // If a delay is provided without a timing function
+    @if is-time($timing-function) and not $delay { $delay: $timing-function; $timing-function: false; $has-delays: true; }
+
+    // Keep a list of delays in case one is specified
+    $delays: append($delays, if($delay, $delay, 0s));
+
+    $webkit-value: append($webkit-value, compact(prefixed-for-transition(-webkit, $property) $duration $timing-function));
+       $moz-value: append(   $moz-value, compact(prefixed-for-transition(   -moz, $property) $duration $timing-function $delay));
+         $o-value: append(     $o-value, compact(prefixed-for-transition(     -o, $property) $duration $timing-function $delay));
+  }
+
+  @if $experimental-support-for-webkit    {       -webkit-transition : $webkit-value;
+    // old webkit doesn't support the delay parameter in the shorthand so we progressively enhance it.
+    @if $has-delays                       { -webkit-transition-delay : $delays;       } }
+  @if $experimental-support-for-mozilla   {          -moz-transition : $moz-value;    }
+  @if $experimental-support-for-opera     {            -o-transition : $o-value;      }
+                                                          transition : $transitions;
+}
+
+// coerce a list to be comma delimited or make a new, empty comma delimited list.
+@function comma-list($list: ()) {
+  @return join((), $list, comma);
+}
+
+// Returns `$property` with the given prefix if it is found in `$transitionable-prefixed-values`.
+@function prefixed-for-transition($prefix, $property) {
+  @if type-of($property) == list {
+    $new-list: comma-list();
+    @each $v in $property {
+      $new-list: append($new-list, prefixed-for-transition($prefix, $v));
+    }
+    @return $new-list;
+  } @else {
+    @if index($transitionable-prefixed-values, $property) {
+      @return #{$prefix}-#{$property};
+    } @else {
+      @return $property;
+    }
+  }
+}
+
+// Checks if the value given is a unit of time.
+@function is-time($value) {
+  @if type-of($value) == number {
+    @return not not index(s ms, unit($value));
+  } @else {
+    @return false;
+  }
+}
+:@has_childrenT;i:@children[o:Sass::Tree::ImportNode:@imported_file0:@imported_filename"shared;o;;@;	o;
+;i;i;o;
+;i;i;0;i;[ :@options{ o:Sass::Tree::CommentNode
+:@value["ï/* CSS Transitions
+ * Currently only works in Webkit.
+ *
+ * * expected in CSS3, FireFox 3.6/7 and Opera Presto 2.3
+ * * We'll be prepared.
+ *
+ * Including this submodule sets following defaults for the mixins:
+ *
+ *     $default-transition-property : all
+ *     $default-transition-duration : 1s
+ *     $default-transition-function : false
+ *     $default-transition-delay    : false
+ *
+ * Override them if you like. Timing-function and delay are set to false for browser defaults (ease, 0s). */;i;[ :
+@type:silent;@o:Sass::Tree::VariableNode:
+@name" default-transition-property;o;;@;	o;
+;i;i0;o;
+;i;i:@guarded"!default;i;[ ;@:
+@expro:Sass::Script::String;"all;o;;@;	o;
+;i;i(;o;
+;i;i$:@filename@;i;:identifier;@o;;" default-transition-duration;o;;@;	o;
+;i;i/;o;
+;i;i;"!default;i;[ ;@;o:Sass::Script::Number:@denominator_units[ :@numerator_units["s;i;o;;@;	o;
+;i;i';o;
+;i;i$:@original"1s;i;@o;;" default-transition-function;o;;@;	o;
+;i;i2;o;
+;i;i;"!default;i;[ ;@;o:Sass::Script::Bool	;F;o;;@;	o;
+;i;i*;o;
+;i;i$;i;@o;;"default-transition-delay;o;;@;	o;
+;i;i/;o;
+;i;i;"!default;i;[ ;@;o;$	;F;o;;@;	o;
+;i;i';o;
+;i;i!;i;@o;;"#transitionable-prefixed-values;o;;@;	o;
+;i;iK;o;
+;i;i;"!default;i;[ ;@;o:Sass::Script::List;[o;;"transform;o;;@;	o;
+;i;i0;o;
+;i;i';@;i;;;@o;;"transform-origin;o;;@;	o;
+;i;iB;o;
+;i;i2;@;i;;;@;o;;@;	o;
+;i;iC;o;
+;i;i';@;i:@separator:
+comma;@o;
+;["}/* One or more properties to transition
+ *
+ * * for multiple, use a comma-delimited list
+ * * also accepts "all" or "none" */;i!;[ ;;;@o:Sass::Tree::MixinDefNode:@splat0:
+@args[[o:Sass::Script::Variable	;"property-1;o;;@;	o;
+;i&;i,;i!;@:@underscored_name"property_1o;+;" default-transition-property;o;;@;	o;
+;i&;iJ;o;
+;i&;iJ;@;i&;@;," default_transition_property[o;+	;"property-2;o;;@;	o;
+;i';i;i;@;,"property_2o;$	;F;o;;@;	o;
+;i';i;o;
+;i';i;i';@[o;+	;"property-3;o;;@;	o;
+;i(;i;i;@;,"property_3o;$	;F;o;;@;	o;
+;i(;i;o;
+;i(;i;i(;@[o;+	;"property-4;o;;@;	o;
+;i);i;i;@;,"property_4o;$	;F;o;;@;	o;
+;i);i;o;
+;i);i;i);@[o;+	;"property-5;o;;@;	o;
+;i*;i;i;@;,"property_5o;$	;F;o;;@;	o;
+;i*;i;o;
+;i*;i;i*;@[o;+	;"property-6;o;;@;	o;
+;i+;i;i;@;,"property_6o;$	;F;o;;@;	o;
+;i+;i;o;
+;i+;i;i+;@[o;+	;"property-7;o;;@;	o;
+;i,;i;i;@;,"property_7o;$	;F;o;;@;	o;
+;i,;i;o;
+;i,;i;i,;@[o;+	;"property-8;o;;@;	o;
+;i-;i;i;@;,"property_8o;$	;F;o;;@;	o;
+;i-;i;o;
+;i-;i;i-;@[o;+	;"property-9;o;;@;	o;
+;i.;i;i;@;,"property_9o;$	;F;o;;@;	o;
+;i.;i;o;
+;i.;i;i.;@[o;+	;"property-10;o;;@;	o;
+;i/;i;i;@;,"property_10o;$	;F;o;;@;	o;
+;i/;i;o;
+;i/;i;i/;@;"transition-property;o;;@;	o;
+;i7;i;o;
+;i&;i;T;i&;[u:Sass::Tree::IfNode»[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei1:@offseti+:@start_poso;
+;i1;i:@operator:eq:@operand2o:Sass::Script::String:@value"string;o;;@;	o;
+;i1;i*;o;
+;i1;i$:@filename@;i1:
+@type:identifier:@options{ ;i1;@:@operand1o:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::Variable:
+@name"property-1;o;;@;	o;
+;i1;i;o;
+;i1;i;@;i1;@:@underscored_name"property_1;"type-of;o;;@;	o;
+;i1;i ;o;
+;i1;i;@:@keywords{ ;i1;@0[o:Sass::Tree::VariableNode;"property-1;o;;@;	o;
+;i1;iN;o;
+;i1;i.:@guarded0;i1:@children[ ;@:
+@expro;;0;[o;;"property-1;o;;@;	o;
+;i1;iM;o;
+;i1;iM;@;i1;@;"property_1;"unquote;o;;@;	o;
+;i1;iN;o;
+;i1;i:;@;{ ;i1;@o;;"properties;o;;@;	o;
+;i2;iš;o;
+;i2;i	;0;i2;[ ;@;o:Sass::Script::Funcall;)0;*[o;+;"property-1;o;;@;	o;
+;i2;i(;o;
+;i2;i(;@;i2;@;,"property_1o;+;"property-2;o;;@;	o;
+;i2;i5;o;
+;i2;i5;@;i2;@;,"property_2o;+;"property-3;o;;@;	o;
+;i2;iB;o;
+;i2;iB;@;i2;@;,"property_3o;+;"property-4;o;;@;	o;
+;i2;iO;o;
+;i2;iO;@;i2;@;,"property_4o;+;"property-5;o;;@;	o;
+;i2;i\;o;
+;i2;i\;@;i2;@;,"property_5o;+;"property-6;o;;@;	o;
+;i2;ii;o;
+;i2;ii;@;i2;@;,"property_6o;+;"property-7;o;;@;	o;
+;i2;iv;o;
+;i2;iv;@;i2;@;,"property_7o;+;"property-8;o;;@;	o;
+;i2;i~;o;
+;i2;i~;@;i2;@;,"property_8o;+;"property-9;o;;@;	o;
+;i2;i‹;o;
+;i2;i‹;@;i2;@;,"property_9o;+;"property-10;o;;@;	o;
+;i2;i™;o;
+;i2;i™;@;i2;@;,"property_10;"compact;o;;@;	o;
+;i2;iš;o;
+;i2;i;@:@keywords{ ;i2;@u;-¸[o:Sass::Script::Variable:
+@name"$experimental-support-for-webkit:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei3:@offseti0:@start_poso;;i3;i:@filename@	;i3:@options{ :@underscored_name"$experimental_support_for_webkit0[o:Sass::Tree::PropNode:
+@tabsi :@valueo:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::String;"-webkit;o;;	@	;
+o;;i3;iu;o;;i3;in;@	;i3:
+@type:identifier;@o; ;"properties;o;;	@	;
+o;;i3;i};o;;i3;i};@	;i3;@;"properties;"prefixed-for-transition;o;;	@	;
+o;;i3;i~;o;;i3;iV;@	:@keywords{ ;i3;@;[" -webkit-transition-property;o;;	@	;
+o;;i3;i~;o;;i3;i8:@value_source_rangeo;;	@	;
+@%;o;;i3;iV;i3:@prop_syntax:new:@children[ ;@:@name_source_rangeo;;	@	;
+o;;i3;iS;@&u;-´[o:Sass::Script::Variable:
+@name"%experimental-support-for-mozilla:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei4:@offseti0:@start_poso;;i4;i:@filename@	;i4:@options{ :@underscored_name"%experimental_support_for_mozilla0[o:Sass::Tree::PropNode:
+@tabsi :@valueo:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::String;"	-moz;o;;	@	;
+o;;i4;ir;o;;i4;in;@	;i4:
+@type:identifier;@o; ;"properties;o;;	@	;
+o;;i4;i};o;;i4;i};@	;i4;@;"properties;"prefixed-for-transition;o;;	@	;
+o;;i4;i~;o;;i4;iV;@	:@keywords{ ;i4;@;["-moz-transition-property;o;;	@	;
+o;;i4;i~;o;;i4;i;:@value_source_rangeo;;	@	;
+@%;o;;i4;iV;i4:@prop_syntax:new:@children[ ;@:@name_source_rangeo;;	@	;
+o;;i4;iS;@&u;-¬[o:Sass::Script::Variable:
+@name"#experimental-support-for-opera:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei5:@offseti0:@start_poso;;i5;i:@filename@	;i5:@options{ :@underscored_name"#experimental_support_for_opera0[o:Sass::Tree::PropNode:
+@tabsi :@valueo:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::String;"-o;o;;	@	;
+o;;i5;ip;o;;i5;in;@	;i5:
+@type:identifier;@o; ;"properties;o;;	@	;
+o;;i5;i};o;;i5;i};@	;i5;@;"properties;"prefixed-for-transition;o;;	@	;
+o;;i5;i~;o;;i5;iV;@	:@keywords{ ;i5;@;["-o-transition-property;o;;	@	;
+o;;i5;i~;o;;i5;i=:@value_source_rangeo;;	@	;
+@%;o;;i5;iV;i5:@prop_syntax:new:@children[ ;@:@name_source_rangeo;;	@	;
+o;;i5;iS;@&o:Sass::Tree::PropNode:
+@tabsi ;o;+;"properties;o;;@;	o;
+;i6;ia;o;
+;i6;iV;@;i6;@;,"properties;["transition-property;o;;@;	o;
+;i6;ia;o;
+;i6;i@:@value_source_rangeo;;@;	@!;o;
+;i6;iV;i6:@prop_syntax:new;[ ;@:@name_source_rangeo;;@;	o;
+;i6;iS;@";@o;
+;["¡/* One or more durations in seconds
+ *
+ * * for multiple, use a comma-delimited list
+ * * these durations will affect the properties in the same list position */;i9;[ ;;;@o;(;)0;*[[o;+	;"duration-1;o;;@;	o;
+;i>;i,;i!;@;,"duration_1o;+;" default-transition-duration;o;;@;	o;
+;i>;iJ;o;
+;i>;iJ;@;i>;@;," default_transition_duration[o;+	;"duration-2;o;;@;	o;
+;i?;i;i;@;,"duration_2o;$	;F;o;;@;	o;
+;i?;i;o;
+;i?;i;i?;@[o;+	;"duration-3;o;;@;	o;
+;i@;i;i;@;,"duration_3o;$	;F;o;;@;	o;
+;i@;i;o;
+;i@;i;i@;@[o;+	;"duration-4;o;;@;	o;
+;iA;i;i;@;,"duration_4o;$	;F;o;;@;	o;
+;iA;i;o;
+;iA;i;iA;@[o;+	;"duration-5;o;;@;	o;
+;iB;i;i;@;,"duration_5o;$	;F;o;;@;	o;
+;iB;i;o;
+;iB;i;iB;@[o;+	;"duration-6;o;;@;	o;
+;iC;i;i;@;,"duration_6o;$	;F;o;;@;	o;
+;iC;i;o;
+;iC;i;iC;@[o;+	;"duration-7;o;;@;	o;
+;iD;i;i;@;,"duration_7o;$	;F;o;;@;	o;
+;iD;i;o;
+;iD;i;iD;@[o;+	;"duration-8;o;;@;	o;
+;iE;i;i;@;,"duration_8o;$	;F;o;;@;	o;
+;iE;i;o;
+;iE;i;iE;@[o;+	;"duration-9;o;;@;	o;
+;iF;i;i;@;,"duration_9o;$	;F;o;;@;	o;
+;iF;i;o;
+;iF;i;iF;@[o;+	;"duration-10;o;;@;	o;
+;iG;i;i;@;,"duration_10o;$	;F;o;;@;	o;
+;iG;i;o;
+;iG;i;iG;@;"transition-duration;o;;@;	o;
+;iN;i;o;
+;i>;i;T;i>;[u;-»[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@lineiI:@offseti+:@start_poso;
+;iI;i:@operator:eq:@operand2o:Sass::Script::String:@value"string;o;;@;	o;
+;iI;i*;o;
+;iI;i$:@filename@;iI:
+@type:identifier:@options{ ;iI;@:@operand1o:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::Variable:
+@name"duration-1;o;;@;	o;
+;iI;i;o;
+;iI;i;@;iI;@:@underscored_name"duration_1;"type-of;o;;@;	o;
+;iI;i ;o;
+;iI;i;@:@keywords{ ;iI;@0[o:Sass::Tree::VariableNode;"duration-1;o;;@;	o;
+;iI;iN;o;
+;iI;i.:@guarded0;iI:@children[ ;@:
+@expro;;0;[o;;"duration-1;o;;@;	o;
+;iI;iM;o;
+;iI;iM;@;iI;@;"duration_1;"unquote;o;;@;	o;
+;iI;iN;o;
+;iI;i:;@;{ ;iI;@o;;"durations;o;;@;	o;
+;iJ;i™;o;
+;iJ;i	;0;iJ;[ ;@;o;.;)0;*[o;+;"duration-1;o;;@;	o;
+;iJ;i';o;
+;iJ;i';@;iJ;@;,"duration_1o;+;"duration-2;o;;@;	o;
+;iJ;i4;o;
+;iJ;i4;@;iJ;@;,"duration_2o;+;"duration-3;o;;@;	o;
+;iJ;iA;o;
+;iJ;iA;@;iJ;@;,"duration_3o;+;"duration-4;o;;@;	o;
+;iJ;iN;o;
+;iJ;iN;@;iJ;@;,"duration_4o;+;"duration-5;o;;@;	o;
+;iJ;i[;o;
+;iJ;i[;@;iJ;@;,"duration_5o;+;"duration-6;o;;@;	o;
+;iJ;ih;o;
+;iJ;ih;@;iJ;@;,"duration_6o;+;"duration-7;o;;@;	o;
+;iJ;iu;o;
+;iJ;iu;@;iJ;@;,"duration_7o;+;"duration-8;o;;@;	o;
+;iJ;i};o;
+;iJ;i};@;iJ;@;,"duration_8o;+;"duration-9;o;;@;	o;
+;iJ;iŠ;o;
+;iJ;iŠ;@;iJ;@;,"duration_9o;+;"duration-10;o;;@;	o;
+;iJ;i˜;o;
+;iJ;i˜;@;iJ;@;,"duration_10;"compact;o;;@;	o;
+;iJ;i™;o;
+;iJ;i;@;/{ ;iJ;@o:Sass::Tree::MixinNode;)0;*[o;;"transition-duration;o;;@;	o;
+;iK;i1;o;
+;iK;i;@;iK;;;@o;+;"durations;o;;@;	o;
+;iK;i=;o;
+;iK;i=;@;iK;@;,"durationso;;"	-moz;o;;@;	o;
+;iL;i;o;
+;iL;i
+;@;iL;;;@o;;"-webkit;o;;@;	o;
+;iL;i;o;
+;iL;i;@;iL;;;@o;;"-o;o;;@;	o;
+;iL;i;o;
+;iL;i;@;iL;;;@o:!Sass::Script::UnaryOperation	:@operando;;"-ms;o;;@;	o;
+;iL;i$;o;
+;iL;i!;@;iL;;;@:@operator:not;iL;@o;7	;8o;;"-khtml;o;;@;	o;
+;iL;i0;o;
+;iL;i*;@;iL;;;@;9;:;iL;@o;;"official;o;;@;	o;
+;iL;i:;o;
+;iL;i2;@;iL;;;@;"experimental;o;;@;	o;
+;iM;i	;o;
+;iK;i;/{ ;iK;[ ;@;@o;
+;["õ/* One or more timing functions
+ *
+ * * [ ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(x1, y1, x2, y2)]
+ * * For multiple, use a comma-delimited list
+ * * These functions will effect the properties in the same list position */;iP;[ ;;;@o;(;)0;*[[o;+	;"function-1;o;;@;	o;
+;iV;i3;i(;@;,"function_1o;+;" default-transition-function;o;;@;	o;
+;iV;iQ;o;
+;iV;iQ;@;iV;@;," default_transition_function[o;+	;"function-2;o;;@;	o;
+;iW;i;i;@;,"function_2o;$	;F;o;;@;	o;
+;iW;i;o;
+;iW;i;iW;@[o;+	;"function-3;o;;@;	o;
+;iX;i;i;@;,"function_3o;$	;F;o;;@;	o;
+;iX;i;o;
+;iX;i;iX;@[o;+	;"function-4;o;;@;	o;
+;iY;i;i;@;,"function_4o;$	;F;o;;@;	o;
+;iY;i;o;
+;iY;i;iY;@[o;+	;"function-5;o;;@;	o;
+;iZ;i;i;@;,"function_5o;$	;F;o;;@;	o;
+;iZ;i;o;
+;iZ;i;iZ;@[o;+	;"function-6;o;;@;	o;
+;i[;i;i;@;,"function_6o;$	;F;o;;@;	o;
+;i[;i;o;
+;i[;i;i[;@[o;+	;"function-7;o;;@;	o;
+;i\;i;i;@;,"function_7o;$	;F;o;;@;	o;
+;i\;i;o;
+;i\;i;i\;@[o;+	;"function-8;o;;@;	o;
+;i];i;i;@;,"function_8o;$	;F;o;;@;	o;
+;i];i;o;
+;i];i;i];@[o;+	;"function-9;o;;@;	o;
+;i^;i;i;@;,"function_9o;$	;F;o;;@;	o;
+;i^;i;o;
+;i^;i;i^;@[o;+	;"function-10;o;;@;	o;
+;i_;i;i;@;,"function_10o;$	;F;o;;@;	o;
+;i_;i;o;
+;i_;i;i_;@;"transition-timing-function;o;;@;	o;
+;if;i;o;
+;iV;i;T;iV;[o;;"function-1;o;;@;	o;
+;ia;i);o;
+;ia;i	;0;ia;[ ;@;o;.;)0;*[o;+;"function-1;o;;@;	o;
+;ia;i(;o;
+;ia;i(;@;ia;@;,"function_1;"unquote;o;;@;	o;
+;ia;i);o;
+;ia;i;@;/{ ;ia;@o;;"functions;o;;@;	o;
+;ib;i™;o;
+;ib;i	;0;ib;[ ;@;o;.;)0;*[o;+;"function-1;o;;@;	o;
+;ib;i';o;
+;ib;i';@;ib;@;,"function_1o;+;"function-2;o;;@;	o;
+;ib;i4;o;
+;ib;i4;@;ib;@;,"function_2o;+;"function-3;o;;@;	o;
+;ib;iA;o;
+;ib;iA;@;ib;@;,"function_3o;+;"function-4;o;;@;	o;
+;ib;iN;o;
+;ib;iN;@;ib;@;,"function_4o;+;"function-5;o;;@;	o;
+;ib;i[;o;
+;ib;i[;@;ib;@;,"function_5o;+;"function-6;o;;@;	o;
+;ib;ih;o;
+;ib;ih;@;ib;@;,"function_6o;+;"function-7;o;;@;	o;
+;ib;iu;o;
+;ib;iu;@;ib;@;,"function_7o;+;"function-8;o;;@;	o;
+;ib;i};o;
+;ib;i};@;ib;@;,"function_8o;+;"function-9;o;;@;	o;
+;ib;iŠ;o;
+;ib;iŠ;@;ib;@;,"function_9o;+;"function-10;o;;@;	o;
+;ib;i˜;o;
+;ib;i˜;@;ib;@;,"function_10;"compact;o;;@;	o;
+;ib;i™;o;
+;ib;i;@;/{ ;ib;@o;6;)0;*[o;;"transition-timing-function;o;;@;	o;
+;ic;i8;o;
+;ic;i;@;ic;;;@o;+;"functions;o;;@;	o;
+;ic;iD;o;
+;ic;iD;@;ic;@;,"functionso;;"	-moz;o;;@;	o;
+;id;i;o;
+;id;i
+;@;id;;;@o;;"-webkit;o;;@;	o;
+;id;i;o;
+;id;i;@;id;;;@o;;"-o;o;;@;	o;
+;id;i;o;
+;id;i;@;id;;;@o;7	;8o;;"-ms;o;;@;	o;
+;id;i$;o;
+;id;i!;@;id;;;@;9;:;id;@o;7	;8o;;"-khtml;o;;@;	o;
+;id;i0;o;
+;id;i*;@;id;;;@;9;:;id;@o;;"official;o;;@;	o;
+;id;i:;o;
+;id;i2;@;id;;;@;"experimental;o;;@;	o;
+;ie;i	;o;
+;ic;i;/{ ;ic;[ ;@;@o;
+;["¦/* One or more transition-delays in seconds
+ *
+ * * for multiple, use a comma-delimited list
+ * * these delays will effect the properties in the same list position */;ih;[ ;;;@o;(;)0;*[[o;+	;"delay-1;o;;@;	o;
+;im;i&;i;@;,"delay_1o;+;"default-transition-delay;o;;@;	o;
+;im;iA;o;
+;im;iA;@;im;@;,"default_transition_delay[o;+	;"delay-2;o;;@;	o;
+;in;i;i;@;,"delay_2o;$	;F;o;;@;	o;
+;in;i;o;
+;in;i;in;@[o;+	;"delay-3;o;;@;	o;
+;io;i;i;@;,"delay_3o;$	;F;o;;@;	o;
+;io;i;o;
+;io;i;io;@[o;+	;"delay-4;o;;@;	o;
+;ip;i;i;@;,"delay_4o;$	;F;o;;@;	o;
+;ip;i;o;
+;ip;i;ip;@[o;+	;"delay-5;o;;@;	o;
+;iq;i;i;@;,"delay_5o;$	;F;o;;@;	o;
+;iq;i;o;
+;iq;i;iq;@[o;+	;"delay-6;o;;@;	o;
+;ir;i;i;@;,"delay_6o;$	;F;o;;@;	o;
+;ir;i;o;
+;ir;i;ir;@[o;+	;"delay-7;o;;@;	o;
+;is;i;i;@;,"delay_7o;$	;F;o;;@;	o;
+;is;i;o;
+;is;i;is;@[o;+	;"delay-8;o;;@;	o;
+;it;i;i;@;,"delay_8o;$	;F;o;;@;	o;
+;it;i;o;
+;it;i;it;@[o;+	;"delay-9;o;;@;	o;
+;iu;i;i;@;,"delay_9o;$	;F;o;;@;	o;
+;iu;i;o;
+;iu;i;iu;@[o;+	;"delay-10;o;;@;	o;
+;iv;i;i;@;,"delay_10o;$	;F;o;;@;	o;
+;iv;i;o;
+;iv;i;iv;@;"transition-delay;o;;@;	o;
+;i};i;o;
+;im;i;T;im;[u;-¬[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@lineix:@offseti(:@start_poso;
+;ix;i:@operator:eq:@operand2o:Sass::Script::String:@value"string;o;;@;	o;
+;ix;i';o;
+;ix;i!:@filename@;ix:
+@type:identifier:@options{ ;ix;@:@operand1o:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::Variable:
+@name"delay-1;o;;@;	o;
+;ix;i;o;
+;ix;i;@;ix;@:@underscored_name"delay_1;"type-of;o;;@;	o;
+;ix;i;o;
+;ix;i;@:@keywords{ ;ix;@0[o:Sass::Tree::VariableNode;"delay-1;o;;@;	o;
+;ix;iE;o;
+;ix;i+:@guarded0;ix:@children[ ;@:
+@expro;;0;[o;;"delay-1;o;;@;	o;
+;ix;iD;o;
+;ix;iD;@;ix;@;"delay_1;"unquote;o;;@;	o;
+;ix;iE;o;
+;ix;i4;@;{ ;ix;@o;;"delays;o;;@;	o;
+;iy;i};o;
+;iy;i	;0;iy;[ ;@;o;.;)0;*[o;+;"delay-1;o;;@;	o;
+;iy;i!;o;
+;iy;i!;@;iy;@;,"delay_1o;+;"delay-2;o;;@;	o;
+;iy;i+;o;
+;iy;i+;@;iy;@;,"delay_2o;+;"delay-3;o;;@;	o;
+;iy;i5;o;
+;iy;i5;@;iy;@;,"delay_3o;+;"delay-4;o;;@;	o;
+;iy;i?;o;
+;iy;i?;@;iy;@;,"delay_4o;+;"delay-5;o;;@;	o;
+;iy;iI;o;
+;iy;iI;@;iy;@;,"delay_5o;+;"delay-6;o;;@;	o;
+;iy;iS;o;
+;iy;iS;@;iy;@;,"delay_6o;+;"delay-7;o;;@;	o;
+;iy;i];o;
+;iy;i];@;iy;@;,"delay_7o;+;"delay-8;o;;@;	o;
+;iy;ig;o;
+;iy;ig;@;iy;@;,"delay_8o;+;"delay-9;o;;@;	o;
+;iy;iq;o;
+;iy;iq;@;iy;@;,"delay_9o;+;"delay-10;o;;@;	o;
+;iy;i|;o;
+;iy;i|;@;iy;@;,"delay_10;"compact;o;;@;	o;
+;iy;i};o;
+;iy;i;@;/{ ;iy;@o;6;)0;*[o;;"transition-delay;o;;@;	o;
+;iz;i.;o;
+;iz;i;@;iz;;;@o;+;"delays;o;;@;	o;
+;iz;i7;o;
+;iz;i7;@;iz;@;,"delayso;;"	-moz;o;;@;	o;
+;i{;i;o;
+;i{;i
+;@;i{;;;@o;;"-webkit;o;;@;	o;
+;i{;i;o;
+;i{;i;@;i{;;;@o;;"-o;o;;@;	o;
+;i{;i;o;
+;i{;i;@;i{;;;@o;7	;8o;;"-ms;o;;@;	o;
+;i{;i$;o;
+;i{;i!;@;i{;;;@;9;:;i{;@o;7	;8o;;"-khtml;o;;@;	o;
+;i{;i0;o;
+;i{;i*;@;i{;;;@;9;:;i{;@o;;"official;o;;@;	o;
+;i{;i:;o;
+;i{;i2;@;i{;;;@;"experimental;o;;@;	o;
+;i|;i	;o;
+;iz;i;/{ ;iz;[ ;@;@o;
+;["*/* Transition all-in-one shorthand */;i;[ ;;;@o;(;)0;*[	[o;+	;"property;o;;@;	o;
+;i};i;i;@;,"propertyo;+;" default-transition-property;o;;@;	o;
+;i};i/;o;
+;i};i/;@;i};@;," default_transition_property[o;+	;"duration;o;;@;	o;
+;i~;i;i;@;,"durationo;+;" default-transition-duration;o;;@;	o;
+;i~;i/;o;
+;i~;i/;@;i~;@;," default_transition_duration[o;+	;"function;o;;@;	o;
+;i;i;i;@;,"functiono;+;" default-transition-function;o;;@;	o;
+;i;i/;o;
+;i;i/;@;i;@;," default_transition_function[o;+	;"
+delay;o;;@;	o;
+;i€;i;i;@;,"
+delayo;+;"default-transition-delay;o;;@;	o;
+;i€;i);o;
+;i€;i);@;i€;@;,"default_transition_delay;"single-transition;o;;@;	o;
+;iƒ;i;o;
+;i|;i;T;i|;[o;6;)0;*[o;.;)0;*[o;%
+;[	o;+;"property;o;;@;	o;
+;i‚;i-;o;
+;i‚;i-;@;i‚;@;,"propertyo;+;"duration;o;;@;	o;
+;i‚;i7;o;
+;i‚;i7;@;i‚;@;,"durationo;+;"function;o;;@;	o;
+;i‚;iA;o;
+;i‚;iA;@;i‚;@;,"functiono;+;"
+delay;o;;@;	o;
+;i‚;iH;o;
+;i‚;iH;@;i‚;@;,"
+delay;@;i‚;&:
+space;@;"compact;o;;@;	o;
+;i‚;iI;o;
+;i‚;i;@;/{ ;i‚;@;"transition;o;;@;	o;
+;i‚;iJ;o;
+;i‚;i;/{ ;i‚;[ ;@;@o;(;)0;*[[o;+	;"transition-1;o;;@;	o;
+;i†;i;i;@;,"transition_1o;;"default;o;;@;	o;
+;i†;i;o;
+;i†;i;@;i†;;;@[o;+	;"transition-2;o;;@;	o;
+;i‡;i;i;@;,"transition_2o;$	;F;o;;@;	o;
+;i‡;i;o;
+;i‡;i;i‡;@[o;+	;"transition-3;o;;@;	o;
+;iˆ;i;i;@;,"transition_3o;$	;F;o;;@;	o;
+;iˆ;i;o;
+;iˆ;i;iˆ;@[o;+	;"transition-4;o;;@;	o;
+;i‰;i;i;@;,"transition_4o;$	;F;o;;@;	o;
+;i‰;i;o;
+;i‰;i;i‰;@[o;+	;"transition-5;o;;@;	o;
+;iŠ;i;i;@;,"transition_5o;$	;F;o;;@;	o;
+;iŠ;i;o;
+;iŠ;i;iŠ;@[o;+	;"transition-6;o;;@;	o;
+;i‹;i;i;@;,"transition_6o;$	;F;o;;@;	o;
+;i‹;i;o;
+;i‹;i;i‹;@[o;+	;"transition-7;o;;@;	o;
+;iŒ;i;i;@;,"transition_7o;$	;F;o;;@;	o;
+;iŒ;i;o;
+;iŒ;i;iŒ;@[o;+	;"transition-8;o;;@;	o;
+;i;i;i;@;,"transition_8o;$	;F;o;;@;	o;
+;i;i;o;
+;i;i;i;@[o;+	;"transition-9;o;;@;	o;
+;iŽ;i;i;@;,"transition_9o;$	;F;o;;@;	o;
+;iŽ;i;o;
+;iŽ;i;iŽ;@[o;+	;"transition-10;o;;@;	o;
+;i;i;i;@;,"transition_10o;$	;F;o;;@;	o;
+;i;i;o;
+;i;i;i;@;"transition;o;;@;	o;
+;i¾;i;o;
+;i…;i;T;i…;[u;-G[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei‘:@offseti%:@start_poso;
+;i‘;i:@operator:eq:@operand2o:Sass::Script::String:@value"default;o;;@;	o;
+;i‘;i$;o;
+;i‘;i:@filename@;i‘:
+@type:identifier:@options{ ;i‘;@:@operand1o:Sass::Script::Variable:
+@name"transition-1;o;;@;	o;
+;i‘;i;o;
+;i‘;i;@;i‘;@:@underscored_name"transition_10[o:Sass::Tree::VariableNode;"transition-1;o;;@;	o;
+;i’;iŽ;o;
+;i’;i:@guarded0;i’:@children[ ;@:
+@expro:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::List
+;[	o;;" default-transition-property;o;;@;	o;
+;i’;i>;o;
+;i’;i>;@;i’;@;" default_transition_propertyo;;" default-transition-duration;o;;@;	o;
+;i’;i[;o;
+;i’;i[;@;i’;@;" default_transition_durationo;;" default-transition-function;o;;@;	o;
+;i’;ix;o;
+;i’;ix;@;i’;@;" default_transition_functiono;;"default-transition-delay;o;;@;	o;
+;i’;i;o;
+;i’;i;@;i’;@;"default_transition_delay;@;i’:@separator:
+space;@;"compact;o;;@;	o;
+;i’;iŽ;o;
+;i’;i;@:@keywords{ ;i’;@o;;"transitions;o;;@;	o;
+;i”;i;o;
+;i”;i	;0;i”;[ ;@;o;$	;F;o;;@;	o;
+;i”;i;o;
+;i”;i;i”;@u;-h[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei•:@offsetiU:@start_poso;
+;i•;i:@operator:and:@operand2o; ;o;;@;	o;
+;i•;iV;o;
+;i•;iT;:eq;o:Sass::Script::String:@value"	list;o;;@;	o;
+;i•;iT;o;
+;i•;iP:@filename@;i•:
+@type:identifier:@options{ ;i•;@:@operand1o:Sass::Script::Funcall:@splat0:
+@args[o;;0;[o:Sass::Script::Variable:
+@name"transition-1;o;;@;	o;
+;i•;iH;o;
+;i•;iH;@;i•;@:@underscored_name"transition_1o:Sass::Script::Number:@denominator_units[ :@numerator_units[ ;i;o;;@;	o;
+;i•;iJ;o;
+;i•;iI:@original"1;i•;@;"nth;o;;@;	o;
+;i•;iK;o;
+;i•;i7;@:@keywords{ ;i•;@;"type-of;o;;@;	o;
+;i•;iL;o;
+;i•;i/;@;#{ ;i•;@;i•;@;o; ;o;;@;	o;
+;i•;i.;o;
+;i•;i*;;;o;;"	list;o;;@;	o;
+;i•;i*;o;
+;i•;i&;@;i•;;;@;i•;@;o;;0;[o;;"transition-1;o;;@;	o;
+;i•;i!;o;
+;i•;i!;@;i•;@;"transition_1;"type-of;o;;@;	o;
+;i•;i";o;
+;i•;i;@;#{ ;i•;@u:Sass::Tree::IfNode~[00[o:Sass::Tree::VariableNode:
+@name"transitions:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei˜:@offseti²:@start_poso;;i˜;i:@guarded0;i˜:@children[ :@options{ :
+@expro:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::Variable;"transition-1;o;;	@
+;
+o;;i˜;i.;o;;i˜;i.:@filename@
+;i˜;@:@underscored_name"transition_1o;;"transition-2;o;;	@
+;
+o;;i˜;i=;o;;i˜;i=;@
+;i˜;@;"transition_2o;;"transition-3;o;;	@
+;
+o;;i˜;iL;o;;i˜;iL;@
+;i˜;@;"transition_3o;;"transition-4;o;;	@
+;
+o;;i˜;i[;o;;i˜;i[;@
+;i˜;@;"transition_4o;;"transition-5;o;;	@
+;
+o;;i˜;ij;o;;i˜;ij;@
+;i˜;@;"transition_5o;;"transition-6;o;;	@
+;
+o;;i˜;iy;o;;i˜;iy;@
+;i˜;@;"transition_6o;;"transition-7;o;;	@
+;
+o;;i˜;iƒ;o;;i˜;iƒ;@
+;i˜;@;"transition_7o;;"transition-8;o;;	@
+;
+o;;i˜;i’;o;;i˜;i’;@
+;i˜;@;"transition_8o;;"transition-9;o;;	@
+;
+o;;i˜;i¡;o;;i˜;i¡;@
+;i˜;@;"transition_9o;;"transition-10;o;;	@
+;
+o;;i˜;i±;o;;i˜;i±;@
+;i˜;@;"transition_10;"compact;o;;	@
+;
+o;;i˜;i²;o;;i˜;i;@
+:@keywords{ ;i˜;@[o:Sass::Tree::VariableNode;"transitions;o;;@;	o;
+;i–;i¾;o;
+;i–;i:@guarded0;i–:@children[ ;@:
+@expro;;0;[o;;"transition-1;o;;@;	o;
+;i–;i*;o;
+;i–;i*;@;i–;@;"transition_1o;;0;[o;;"transition-2;o;;@;	o;
+;i–;iA;o;
+;i–;iA;@;i–;@;"transition_2o;;"transition-3;o;;@;	o;
+;i–;iP;o;
+;i–;iP;@;i–;@;"transition_3o;;"transition-4;o;;@;	o;
+;i–;i_;o;
+;i–;i_;@;i–;@;"transition_4o;;"transition-5;o;;@;	o;
+;i–;in;o;
+;i–;in;@;i–;@;"transition_5o;;"transition-6;o;;@;	o;
+;i–;i};o;
+;i–;i};@;i–;@;"transition_6o;;"transition-7;o;;@;	o;
+;i–;i‡;o;
+;i–;i‡;@;i–;@;"transition_7o;;"transition-8;o;;@;	o;
+;i–;i–;o;
+;i–;i–;@;i–;@;"transition_8o;;"transition-9;o;;@;	o;
+;i–;i¥;o;
+;i–;i¥;@;i–;@;"transition_9o;;"transition-10;o;;@;	o;
+;i–;iµ;o;
+;i–;iµ;@;i–;@;"transition_10;"compact;o;;@;	o;
+;i–;i¶;o;
+;i–;i,;@;#{ ;i–;@o;;"
+comma;o;;@;	o;
+;i–;i½;o;
+;i–;i¸;@;i–;;;@;"	join;o;;@;	o;
+;i–;i¾;o;
+;i–;i;@;#{ ;i–;@o;;"delays;o;;@;	o;
+;iš;i;o;
+;iš;i	;0;iš;[ ;@;o;.;)0;*[ ;"comma-list;o;;@;	o;
+;iš;i;o;
+;iš;i;@;/{ ;iš;@o;;"has-delays;o;;@;	o;
+;i›;i;o;
+;i›;i	;0;i›;[ ;@;o;$	;F;o;;@;	o;
+;i›;i;o;
+;i›;i;i›;@o;;"webkit-value;o;;@;	o;
+;iœ;i#;o;
+;iœ;i	;0;iœ;[ ;@;o;.;)0;*[ ;"comma-list;o;;@;	o;
+;iœ;i#;o;
+;iœ;i;@;/{ ;iœ;@o;;"moz-value;o;;@;	o;
+;i;i ;o;
+;i;i	;0;i;[ ;@;o;.;)0;*[ ;"comma-list;o;;@;	o;
+;i;i ;o;
+;i;i;@;/{ ;i;@o;;"o-value;o;;@;	o;
+;iž;i;o;
+;iž;i	;0;iž;[ ;@;o;.;)0;*[ ;"comma-list;o;;@;	o;
+;iž;i;o;
+;iž;i;@;/{ ;iž;@o;
+;["˜/* This block can be made considerably simpler at the point in time that
+ * we no longer need to deal with the differences in how delays are treated. */;i ;[ ;;;@o:Sass::Tree::EachNode;o;;@;	o;
+;i¶;i	;o;
+;i¢;i;T;i¢:	@var"transition;[o;
+;["}/* Extract the values from the list
+ * (this would be cleaner if nth took a 3rd argument to provide a default value). */;i£;[ ;;;@o;;"property;o;;@;	o;
+;i¥;i(;o;
+;i¥;i;0;i¥;[ ;@;o;.;)0;*[o;+;"transition;o;;@;	o;
+;i¥;i$;o;
+;i¥;i$;@;i¥;@;,"transitiono; ;![ ;"[ ;i;o;;@;	o;
+;i¥;i';o;
+;i¥;i&;#"1;i¥;@;"nth;o;;@;	o;
+;i¥;i(;o;
+;i¥;i;@;/{ ;i¥;@o;;"duration;o;;@;	o;
+;i¦;i;o;
+;i¦;i;0;i¦;[ ;@;o;$	;F;o;;@;	o;
+;i¦;i;o;
+;i¦;i;i¦;@o;;"timing-function;o;;@;	o;
+;i§;i!;o;
+;i§;i;0;i§;[ ;@;o;$	;F;o;;@;	o;
+;i§;i!;o;
+;i§;i;i§;@o;;"
+delay;o;;@;	o;
+;i¨;i;o;
+;i¨;i;0;i¨;[ ;@;o;$	;F;o;;@;	o;
+;i¨;i;o;
+;i¨;i;i¨;@u;-*[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei©:@offseti&:@start_poso;
+;i©;i:@operator:gt:@operand2o:Sass::Script::Number:@denominator_units[ :@numerator_units[ :@valuei;o;;@;	o;
+;i©;i%;o;
+;i©;i$:@original"1;i©:@options{ ;i©;@:@operand1o:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::Variable:
+@name"transition;o;;@;	o;
+;i©;i ;o;
+;i©;i :@filename@;i©;@:@underscored_name"transition;"length;o;;@;	o;
+;i©;i!;o;
+;i©;i;@:@keywords{ ;i©;@0[o:Sass::Tree::VariableNode;"duration;o;;@;	o;
+;i©;iM;o;
+;i©;i):@guarded0;i©:@children[ ;@:
+@expro;;0;[o;;"transition;o;;@;	o;
+;i©;iI;o;
+;i©;iI;@;i©;@;"transitiono;;@;[ ;i;o;;@;	o;
+;i©;iL;o;
+;i©;iK;"2;i©;@;"nth;o;;@;	o;
+;i©;iM;o;
+;i©;i:;@;{ ;i©;@u;-1[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@lineiª:@offseti&:@start_poso;
+;iª;i:@operator:gt:@operand2o:Sass::Script::Number:@denominator_units[ :@numerator_units[ :@valuei;o;;@;	o;
+;iª;i%;o;
+;iª;i$:@original"2;iª:@options{ ;iª;@:@operand1o:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::Variable:
+@name"transition;o;;@;	o;
+;iª;i ;o;
+;iª;i :@filename@;iª;@:@underscored_name"transition;"length;o;;@;	o;
+;iª;i!;o;
+;iª;i;@:@keywords{ ;iª;@0[o:Sass::Tree::VariableNode;"timing-function;o;;@;	o;
+;iª;iM;o;
+;iª;i):@guarded0;iª:@children[ ;@:
+@expro;;0;[o;;"transition;o;;@;	o;
+;iª;iI;o;
+;iª;iI;@;iª;@;"transitiono;;@;[ ;i;o;;@;	o;
+;iª;iL;o;
+;iª;iK;"3;iª;@;"nth;o;;@;	o;
+;iª;iM;o;
+;iª;i:;@;{ ;iª;@u;-½[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei«:@offseti&:@start_poso;
+;i«;i:@operator:gt:@operand2o:Sass::Script::Number:@denominator_units[ :@numerator_units[ :@valuei;o;;@;	o;
+;i«;i%;o;
+;i«;i$:@original"3;i«:@options{ ;i«;@:@operand1o:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::Variable:
+@name"transition;o;;@;	o;
+;i«;i ;o;
+;i«;i :@filename@;i«;@:@underscored_name"transition;"length;o;;@;	o;
+;i«;i!;o;
+;i«;i;@:@keywords{ ;i«;@0[o:Sass::Tree::VariableNode;"
+delay;o;;@;	o;
+;i«;iM;o;
+;i«;i):@guarded0;i«:@children[ ;@:
+@expro;;0;[o;;"transition;o;;@;	o;
+;i«;iI;o;
+;i«;iI;@;i«;@;"transitiono;;@;[ ;i	;o;;@;	o;
+;i«;iL;o;
+;i«;iK;"4;i«;@;"nth;o;;@;	o;
+;i«;iM;o;
+;i«;i:;@;{ ;i«;@o; ;"has-delays;o;;@;	o;
+;i«;i`;o;
+;i«;iP;!0;i«;"[ ;@;#o:Sass::Script::Bool	;T;o;;@;	o;
+;i«;i`;o;
+;i«;i\;i«;@o;
+;[";/* If a delay is provided without a timing function */;i­;[ ;;;@u;-Ë[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei®:@offseti7:@start_poso;
+;i®;i:@operator:and:@operand2o:!Sass::Script::UnaryOperation	:@operando:Sass::Script::Variable:
+@name"
+delay;o;;@;	o;
+;i®;i6;o;
+;i®;i6:@filename@;i®:@options{ :@underscored_name"
+delay;:not;i®;@;i®;@:@operand1o:Sass::Script::Funcall:@splat0:
+@args[o;;"timing-function;o;;@;	o;
+;i®;i&;o;
+;i®;i&;@;i®;@;"timing_function;"is-time;o;;@;	o;
+;i®;i';o;
+;i®;i;@:@keywords{ ;i®;@0[o:Sass::Tree::VariableNode;"
+delay;o;;@;	o;
+;i®;iQ;o;
+;i®;i::@guarded0;i®:@children[ ;@:
+@expro;;"timing-function;o;;@;	o;
+;i®;iQ;o;
+;i®;iA;@;i®;@;"timing_functiono;;"timing-function;o;;@;	o;
+;i®;ij;o;
+;i®;iT;0;i®; [ ;@;!o:Sass::Script::Bool	:@valueF;o;;@;	o;
+;i®;ij;o;
+;i®;ie;i®;@o;;"has-delays;o;;@;	o;
+;i®;i};o;
+;i®;im;0;i®; [ ;@;!o;"	;#T;o;;@;	o;
+;i®;i};o;
+;i®;iy;i®;@o;
+;["9/* Keep a list of delays in case one is specified */;i°;[ ;;;@o;;"delays;o;;@;	o;
+;i±;i:;o;
+;i±;i;0;i±;[ ;@;o;.;)0;*[o;+;"delays;o;;@;	o;
+;i±;i!;o;
+;i±;i!;@;i±;@;,"delayso;.;)0;*[o;+;"
+delay;o;;@;	o;
+;i±;i,;o;
+;i±;i,;@;i±;@;,"
+delayo;+;"
+delay;o;;@;	o;
+;i±;i4;o;
+;i±;i4;@;i±;@;,"
+delayo; ;![ ;"["s;i ;o;;@;	o;
+;i±;i8;o;
+;i±;i6;#"0s;i±;@;"if;o;;@;	o;
+;i±;i9;o;
+;i±;i#;@;/{ ;i±;@;"append;o;;@;	o;
+;i±;i:;o;
+;i±;i;@;/{ ;i±;@o;;"webkit-value;o;;@;	o;
+;i³;i;o;
+;i³;i;0;i³;[ ;@;o;.;)0;*[o;+;"webkit-value;o;;@;	o;
+;i³;i-;o;
+;i³;i-;@;i³;@;,"webkit_valueo;.;)0;*[o;%
+;[o;.;)0;*[o;;"-webkit;o;;@;	o;
+;i³;iV;o;
+;i³;iO;@;i³;;;@o;+;"property;o;;@;	o;
+;i³;ia;o;
+;i³;ia;@;i³;@;,"property;"prefixed-for-transition;o;;@;	o;
+;i³;ib;o;
+;i³;i7;@;/{ ;i³;@o;+;"duration;o;;@;	o;
+;i³;il;o;
+;i³;il;@;i³;@;,"durationo;+;"timing-function;o;;@;	o;
+;i³;i};o;
+;i³;i};@;i³;@;,"timing_function;@;i³;&;;;@;"compact;o;;@;	o;
+;i³;i~;o;
+;i³;i/;@;/{ ;i³;@;"append;o;;@;	o;
+;i³;i;o;
+;i³;i;@;/{ ;i³;@o;;"moz-value;o;;@;	o;
+;i´;i;o;
+;i´;i;0;i´;[ ;@;o;.;)0;*[o;+;"moz-value;o;;@;	o;
+;i´;i-;o;
+;i´;i-;@;i´;@;,"moz_valueo;.;)0;*[o;%
+;[	o;.;)0;*[o;;"	-moz;o;;@;	o;
+;i´;iV;o;
+;i´;iR;@;i´;;;@o;+;"property;o;;@;	o;
+;i´;ia;o;
+;i´;ia;@;i´;@;,"property;"prefixed-for-transition;o;;@;	o;
+;i´;ib;o;
+;i´;i7;@;/{ ;i´;@o;+;"duration;o;;@;	o;
+;i´;il;o;
+;i´;il;@;i´;@;,"durationo;+;"timing-function;o;;@;	o;
+;i´;i};o;
+;i´;i};@;i´;@;,"timing_functiono;+;"
+delay;o;;@;	o;
+;i´;i;o;
+;i´;i;@;i´;@;,"
+delay;@;i´;&;;;@;"compact;o;;@;	o;
+;i´;i€;o;
+;i´;i/;@;/{ ;i´;@;"append;o;;@;	o;
+;i´;i;o;
+;i´;i;@;/{ ;i´;@o;;"o-value;o;;@;	o;
+;iµ;i;o;
+;iµ;i;0;iµ;[ ;@;o;.;)0;*[o;+;"o-value;o;;@;	o;
+;iµ;i-;o;
+;iµ;i-;@;iµ;@;,"o_valueo;.;)0;*[o;%
+;[	o;.;)0;*[o;;"-o;o;;@;	o;
+;iµ;iV;o;
+;iµ;iT;@;iµ;;;@o;+;"property;o;;@;	o;
+;iµ;ia;o;
+;iµ;ia;@;iµ;@;,"property;"prefixed-for-transition;o;;@;	o;
+;iµ;ib;o;
+;iµ;i7;@;/{ ;iµ;@o;+;"duration;o;;@;	o;
+;iµ;il;o;
+;iµ;il;@;iµ;@;,"durationo;+;"timing-function;o;;@;	o;
+;iµ;i};o;
+;iµ;i};@;iµ;@;,"timing_functiono;+;"
+delay;o;;@;	o;
+;iµ;i;o;
+;iµ;i;@;iµ;@;,"
+delay;@;iµ;&;;;@;"compact;o;;@;	o;
+;iµ;i€;o;
+;iµ;i/;@;/{ ;iµ;@;"append;o;;@;	o;
+;iµ;i;o;
+;iµ;i;@;/{ ;iµ;@;@:
+@listo;+;"transitions;o;;@;	o;
+;i¢;i*;o;
+;i¢;i;@;i¢;@;,"transitionsu;-$[o:Sass::Script::Variable:
+@name"$experimental-support-for-webkit:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei¸:@offseti0:@start_poso;;i¸;i:@filename@	;i¸:@options{ :@underscored_name"$experimental_support_for_webkit0[o:Sass::Tree::PropNode:
+@tabsi :@valueo; ;"webkit-value;o;;	@	;
+o;;i¸;iZ;o;;i¸;iM;@	;i¸;@;"webkit_value;["-webkit-transition;o;;	@	;
+o;;i¸;iZ;o;;i¸;i8:@value_source_rangeo;;	@	;
+@;o;;i¸;iM;i¸:@prop_syntax:new:@children[ ;@:@name_source_rangeo;;	@	;
+o;;i¸;iJ;@o:Sass::Tree::CommentNode
+;["j/* old webkit doesn't support the delay parameter in the shorthand so we progressively enhance it. */;i¹;[ :
+@type:silent;@u:Sass::Tree::IfNode[o:Sass::Script::Variable:
+@name"has-delays:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@lineiº:@offseti0:@start_poso;;iº;i:@filename@	;iº:@options{ :@underscored_name"has_delays0[o:Sass::Tree::PropNode:
+@tabsi :@valueo; ;"delays;o;;	@	;
+o;;iº;iT;o;;iº;iM;@	;iº;@;"delays;["-webkit-transition-delay;o;;	@	;
+o;;iº;iT;o;;iº;i2:@value_source_rangeo;;	@	;
+@;o;;iº;iM;iº:@prop_syntax:new:@children[ ;@:@name_source_rangeo;;	@	;
+o;;iº;iJ;@u;-Æ[o:Sass::Script::Variable:
+@name"%experimental-support-for-mozilla:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei»:@offseti0:@start_poso;;i»;i:@filename@	;i»:@options{ :@underscored_name"%experimental_support_for_mozilla0[o:Sass::Tree::PropNode:
+@tabsi :@valueo; ;"moz-value;o;;	@	;
+o;;i»;iW;o;;i»;iM;@	;i»;@;"moz_value;["-moz-transition;o;;	@	;
+o;;i»;iW;o;;i»;i;:@value_source_rangeo;;	@	;
+@;o;;i»;iM;i»:@prop_syntax:new:@children[ ;@:@name_source_rangeo;;	@	;
+o;;i»;iJ;@u;-¼[o:Sass::Script::Variable:
+@name"#experimental-support-for-opera:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@linei¼:@offseti0:@start_poso;;i¼;i:@filename@	;i¼:@options{ :@underscored_name"#experimental_support_for_opera0[o:Sass::Tree::PropNode:
+@tabsi :@valueo; ;"o-value;o;;	@	;
+o;;i¼;iU;o;;i¼;iM;@	;i¼;@;"o_value;["-o-transition;o;;	@	;
+o;;i¼;iU;o;;i¼;i=:@value_source_rangeo;;	@	;
+@;o;;i¼;iM;i¼:@prop_syntax:new:@children[ ;@:@name_source_rangeo;;	@	;
+o;;i¼;iJ;@o;0;1i ;o;+;"transitions;o;;@;	o;
+;i½;iY;o;
+;i½;iM;@;i½;@;,"transitions;["transition;o;;@;	o;
+;i½;iY;o;
+;i½;i@;2o;;@;	@k;o;
+;i½;iM;i½;3;4;[ ;@;5o;;@;	o;
+;i½;iJ;@l;@o;
+;["Y/* coerce a list to be comma delimited or make a new, empty comma delimited list. */;iÀ;[ ;;;@o:Sass::Tree::FunctionNode;)0;*[[o;+	;"	list;o;;@;	o;
+;iÁ;i ;i;@;,"	listo;%
+;[ ;@;iÁ;&;;;@;"comma-list;o;;@;	o;
+;iÃ;i;o;
+;iÁ;i;T;iÁ;[o:Sass::Tree::ReturnNode
+;o;;@;	o;
+;iÂ;i&;o;
+;iÂ;i;iÂ;[ ;@;o;.;)0;*[o;%
+;[ ;@;iÂ;&;;;@o;+;"	list;o;;@;	o;
+;iÂ;i;o;
+;iÂ;i;@;iÂ;@;,"	listo;;"
+comma;o;;@;	o;
+;iÂ;i%;o;
+;iÂ;i ;@;iÂ;;;@;"	join;o;;@;	o;
+;iÂ;i&;o;
+;iÂ;i;@;/{ ;iÂ;@;@o;
+;["i/* Returns `$property` with the given prefix if it is found in `$transitionable-prefixed-values`. */;iÅ;[ ;;;@o;?;)0;*[[o;+	;"prefix;o;;@;	o;
+;iÆ;i/;i(;@;,"prefix0[o;+	;"property;o;;@;	o;
+;iÆ;i:;i1;@;,"property0;"prefixed-for-transition;o;;@;	o;
+;iÔ;i;o;
+;iÆ;i;T;iÆ;[u;-'[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@lineiÇ:@offseti':@start_poso;
+;iÇ;i:@operator:eq:@operand2o:Sass::Script::String:@value"	list;o;;@;	o;
+;iÇ;i&;o;
+;iÇ;i":@filename@;iÇ:
+@type:identifier:@options{ ;iÇ;@:@operand1o:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::Variable:
+@name"property;o;;@;	o;
+;iÇ;i;o;
+;iÇ;i;@;iÇ;@:@underscored_name"property;"type-of;o;;@;	o;
+;iÇ;i;o;
+;iÇ;i;@:@keywords{ ;iÇ;@u:Sass::Tree::IfNodeb[00[u:Sass::Tree::IfNodeB[o:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::Variable:
+@name"#transitionable-prefixed-values:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@lineiÎ:@offseti3:@start_poso;;iÎ;i3:@filename@;iÎ:@options{ :@underscored_name"#transitionable_prefixed_valueso;;	"property;
+o;;@;o;;iÎ;i>;o;;iÎ;i>;@;iÎ;@;"property;	"
+index;
+o;;@;o;;iÎ;i@;o;;iÎ;i;@:@keywords{ ;iÎ;@u:Sass::Tree::IfNodeµ[00[o:Sass::Tree::ReturnNode
+:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@lineiÑ:@offseti:@start_poso;
+;iÑ;i;iÑ:@children[ :@options{ :
+@expro:Sass::Script::Variable:
+@name"property;o;;@	;	o;
+;iÑ;i;o;
+;iÑ;i:@filename@	;iÑ;@:@underscored_name"property[o:Sass::Tree::ReturnNode
+;
+o;;@;o;;iÏ;i+;o;;iÏ;i;iÏ:@children[ ;@:
+@expro: Sass::Script::Interpolation:@whitespace_beforei”;
+o;;@;o;;iÏ;i+;o;;iÏ;i:@aftero;;0;0:@originally_textF;iÏ:	@mido;;	"property;
+o;;@;o;;iÏ;i+;o;;iÏ;i!;@;iÏ;@;"property;@:@whitespace_after0:@beforeo;;0;0;:originally_text;iÏ;o:Sass::Script::String	:@value"-;iÏ:
+@type:identifier;@;@;F; 0;F;iÏ;o;;	"prefix;
+o;;@;o;;iÏ;i;o;;iÏ;i;@;iÏ;@;"prefix;@;0; 0[o:Sass::Tree::VariableNode;"new-list;o;;@;	o;
+;iÈ;i!;o;
+;iÈ;i:@guarded0;iÈ:@children[ ;@:
+@expro;;0;[ ;"comma-list;o;;@;	o;
+;iÈ;i!;o;
+;iÈ;i;@;{ ;iÈ;@o:Sass::Tree::EachNode;o;;@;	o;
+;iË;i;o;
+;iÉ;i
+:@has_childrenT;iÉ:	@var"v;"[o; ;"new-list;o;;@;	o;
+;iÊ;iN;o;
+;iÊ;i;!0;iÊ;"[ ;@;#o;;0;[o;;"new-list;o;;@;	o;
+;iÊ;i';o;
+;iÊ;i';@;iÊ;@;"new_listo;;0;[o;;"prefix;o;;@;	o;
+;iÊ;iH;o;
+;iÊ;iH;@;iÊ;@;"prefixo;;"v;o;;@;	o;
+;iÊ;iL;o;
+;iÊ;iL;@;iÊ;@;"v;"prefixed-for-transition;o;;@;	o;
+;iÊ;iM;o;
+;iÊ;i);@;{ ;iÊ;@;"append;o;;@;	o;
+;iÊ;iN;o;
+;iÊ;i;@;{ ;iÊ;@;@:
+@listo;;"property;o;;@;	o;
+;iÉ;i ;o;
+;iÉ;i;@;iÉ;@;"propertyo:Sass::Tree::ReturnNode
+;o;;@;	o;
+;iÌ;i;o;
+;iÌ;i
+;iÌ;"[ ;@;#o;;"new-list;o;;@;	o;
+;iÌ;i;o;
+;iÌ;i;@;iÌ;@;"new_list;@o;
+;["7/* Checks if the value given is a unit of time. */;iÖ;[ ;;;@o;?;)0;*[[o;+	;"
+value;o;;@;	o;
+;i×;i;i;@;,"
+value0;"is-time;o;;@;	o;
+;iÝ;i;o;
+;i×;i;T;i×;[u;-µ[o:Sass::Script::Operation:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@lineiØ:@offseti&:@start_poso;
+;iØ;i:@operator:eq:@operand2o:Sass::Script::String:@value"number;o;;@;	o;
+;iØ;i%;o;
+;iØ;i:@filename@;iØ:
+@type:identifier:@options{ ;iØ;@:@operand1o:Sass::Script::Funcall:@splat0:
+@args[o:Sass::Script::Variable:
+@name"
+value;o;;@;	o;
+;iØ;i;o;
+;iØ;i;@;iØ;@:@underscored_name"
+value;"type-of;o;;@;	o;
+;iØ;i;o;
+;iØ;i;@:@keywords{ ;iØ;@u:Sass::Tree::IfNode[00[o:Sass::Tree::ReturnNode
+:@source_rangeo:Sass::Source::Range:
+@file"l/Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/css3/_transition.scss:@end_poso:Sass::Source::Position:
+@lineiÛ:@offseti:@start_poso;
+;iÛ;i
+;iÛ:@children[ :@options{ :
+@expro:Sass::Script::Bool	:@valueF;o;;@	;	o;
+;iÛ;i;o;
+;iÛ;i;iÛ;@[o:Sass::Tree::ReturnNode
+;o;;@;	o;
+;iÙ;i3;o;
+;iÙ;i
+;iÙ:@children[ ;@:
+@expro:!Sass::Script::UnaryOperation
+:@operando;#	;$o;;0;[o:Sass::Script::List
+;[o;;"s;o;;@;	o;
+;iÙ;i!;o;
+;iÙ;i ;@;iÙ;;;@o;;"ms;o;;@;	o;
+;iÙ;i$;o;
+;iÙ;i";@;iÙ;;;@;@;iÙ:@separator:
+space;@o;;0;[o;;"
+value;o;;@;	o;
+;iÙ;i1;o;
+;iÙ;i1;@;iÙ;@;"
+value;"	unit;o;;@;	o;
+;iÙ;i2;o;
+;iÙ;i&;@;{ ;iÙ;@;"
+index;o;;@;	o;
+;iÙ;i3;o;
+;iÙ;i;@;{ ;iÙ;@;:not;iÙ;@;o;;@;	o;
+;iÙ;i3;o;
+;iÙ;i;;(;iÙ;@;@;@
