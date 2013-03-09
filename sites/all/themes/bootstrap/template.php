@@ -1,19 +1,18 @@
 <?php
 
 $theme_path = drupal_get_path('theme', 'bootstrap');
-include_once($theme_path . '/includes/bootstrap.inc');
-include_once($theme_path . '/includes/modules/theme.inc');
-include_once($theme_path . '/includes/modules/pager.inc');
-include_once($theme_path . '/includes/modules/form.inc');
-include_once($theme_path . '/includes/modules/admin.inc');
-include_once($theme_path . '/includes/modules/menu.inc');
+require_once $theme_path . '/includes/bootstrap.inc';
+require_once $theme_path . '/includes/theme.inc';
+require_once $theme_path . '/includes/pager.inc';
+require_once $theme_path . '/includes/form.inc';
+require_once $theme_path . '/includes/admin.inc';
+require_once $theme_path . '/includes/menu.inc';
 
-// Load module include files
-$modules = module_list();
-
-foreach ($modules as $module) {
-  if (is_file(drupal_get_path('theme', 'bootstrap') . '/includes/modules/' . str_replace('_', '-', $module) . '.inc')) {
-    include_once(drupal_get_path('theme', 'bootstrap') . '/includes/modules/' . str_replace('_', '-', $module) . '.inc');
+// Load module specific files in the modules directory.
+$includes = file_scan_directory($theme_path . '/includes/modules', '/\.inc$/');
+foreach ($includes as $include) {
+  if (module_exists($include->name)) {
+    require_once $include->uri;
   }    
 }
 
@@ -121,59 +120,41 @@ function bootstrap_preprocess_page(&$variables) {
   else {
     $variables['columns'] = 1;
   }
-  
-  // Our custom search because its cool :)
-  $variables['search'] = FALSE;
-  if (theme_get_setting('toggle_search') && module_exists('search')) {
-    $variables['search'] = drupal_get_form('_bootstrap_search_form');
-  }
 
   // Primary nav
   $variables['primary_nav'] = FALSE;
   if ($variables['main_menu']) {
     // Build links
-    $tree = menu_tree_page_data(variable_get('menu_main_links_source', 'main-menu'));
-    $variables['main_menu'] = bootstrap_menu_navigation_links($tree);
-    
-    // Build list
-    $variables['primary_nav'] = theme('bootstrap_links', array(
-      'links' => $variables['main_menu'],
-      'attributes' => array(
-        'id' => 'main-menu',
-        'class' => array('nav'),
-      ),
-      'heading' => array(
-        'text' => t('Main menu'),
-        'level' => 'h2',
-        'class' => array('element-invisible'),
-      ),
-    ));
+    $variables['primary_nav'] = menu_tree(variable_get('menu_main_links_source', 'main-menu'));
+    // Provide default theme wrapper function
+    $variables['primary_nav']['#theme_wrappers'] = array('menu_tree__primary');
   }
-  
+
   // Secondary nav
   $variables['secondary_nav'] = FALSE;
-  if (function_exists('menu_load') && $variables['secondary_menu']) {
-    $secondary_menu = menu_load(variable_get('menu_secondary_links_source', 'user-menu'));
-
-    // Build list
-    $variables['secondary_nav'] = theme('bootstrap_btn_dropdown', array(
-      'links' => $variables['secondary_menu'],
-      'label' => $secondary_menu['title'],
-      'type' => 'success',
-      'attributes' => array(
-        'id' => 'user-menu',
-        'class' => array('pull-right'),
-      ),
-      'heading' => array(
-        'text' => t('Secondary menu'),
-        'level' => 'h2',
-        'class' => array('element-invisible'),
-      ),
-    ));
+  if ($variables['secondary_menu']) {
+    // Build links
+    $variables['secondary_nav'] = menu_tree(variable_get('menu_secondary_links_source', 'user-menu'));
+    // Provide default theme wrapper function
+    $variables['secondary_nav']['#theme_wrappers'] = array('menu_tree__secondary');
   }
-  
+
   // Replace tabs with drop down version
   $variables['tabs']['#primary'] = _bootstrap_local_tasks($variables['tabs']['#primary']);
+}
+
+/**
+ * Bootstrap theme wrapper function for the primary menu links
+ */
+function bootstrap_menu_tree__primary(&$variables) {
+  return '<ul class="menu nav">' . $variables['tree'] . '</ul>';
+}
+
+/**
+ * Bootstrap theme wrapper function for the secondary menu links
+ */
+function bootstrap_menu_tree__secondary(&$variables) {
+  return '<ul class="menu nav pull-right">' . $variables['tree'] . '</ul>';
 }
 
 /**
@@ -277,26 +258,6 @@ function bootstrap_preprocess_block(&$variables, $hook) {
 function bootstrap_process_block(&$variables, $hook) {
   // Drupal 7 should use a $title variable instead of $block->subject.
   $variables['title'] = $variables['block']->subject;
-}
-
-function _bootstrap_search_form($form, &$form_state) {
-  // Get custom search form for now
-  $form = search_form($form, $form_state);
-
-  // Cleanup
-  $form['#attributes']['class'][] = 'navbar-search';
-  $form['#attributes']['class'][] = 'pull-left';
-  $form['basic']['keys']['#title'] = '';
-  $form['basic']['keys']['#attributes']['class'][] = 'search-query';
-  $form['basic']['keys']['#attributes']['class'][] = 'span2';
-  $form['basic']['keys']['#attributes']['placeholder'] = t('Search');
-  unset($form['basic']['submit']);
-  unset($form['basic']['#type']);
-  unset($form['basic']['#attributes']);
-  $form += $form['basic'];
-  unset($form['basic']);
-
-  return $form;
 }
 
 /**

@@ -38,8 +38,15 @@ function bootstrap_form_element(&$variables) {
     $attributes['id'] = $element['#id'];
   }
 
+  $exclude_control = FALSE;
+  $control_wrapper = '<div class="controls">';
   // Add bootstrap class
-  $attributes['class'] = array('control-group');
+  if ($element['#type'] == "radio" || $element['#type'] == "checkbox") {
+    $exclude_control = TRUE;
+  }
+  else {
+    $attributes['class'] = array('control-group');
+  }
 
   // Check for errors and set correct error class
   if (isset($element['#parents']) && form_get_error($element)) {
@@ -74,18 +81,18 @@ function bootstrap_form_element(&$variables) {
     case 'invisible':
       $output .= ' ' . theme('form_element_label', $variables);
       // Check if item exists in element whitelist
-      if (in_array($element['#id'], $whitelist)) {
+      if (isset($element['#id']) && in_array($element['#id'], $whitelist)) {
         $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
         $exclude_control = TRUE;
       }
       else {
-        $output .= '<div class="controls">';
+        $output = $exclude_control ? $output : $output.$control_wrapper;
         $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
       }
       break;
 
     case 'after':
-      $output .= '<div class="controls">';
+      $output = $exclude_control ? $output : $output.$control_wrapper;
       $variables['#children'] = ' ' . $prefix . $element['#children'] . $suffix;
       $output .= ' ' . theme('form_element_label', $variables) . "\n";
       break;
@@ -93,7 +100,7 @@ function bootstrap_form_element(&$variables) {
     case 'none':
     case 'attribute':
       // Output no label and no required marker, only the children.
-      $output .= '<div class="controls">';
+      $output = $exclude_control ? $output : $output.$control_wrapper;
       $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
       break;
   }
@@ -103,7 +110,7 @@ function bootstrap_form_element(&$variables) {
   }
 
   // Check if control wrapper was added to ensure we close div correctly
-  if (!empty($exclude_control)) {
+  if ($exclude_control) {
     $output .= "</div>\n";
   }
   else {
@@ -145,9 +152,10 @@ function bootstrap_form_element_label(&$variables) {
     $attributes['for'] = $element['#id'];
   }
 
-  // @Bootstrap: Add Bootstrap control-label class.
-  $attributes['class'][] = 'control-label';
-
+  // @Bootstrap: Add Bootstrap control-label class except for radio.
+  if ($element['#type'] != 'radio') {
+    $attributes['class'][] = 'control-label';
+  }
   // @Bootstrap: Insert radio and checkboxes inside label elements.
   $output = '';
   if ( isset($variables['#children']) ) {

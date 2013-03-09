@@ -54,7 +54,6 @@ function bootstrap_item_list($variables) {
 
 /**
  * Returns HTML for status and/or error messages, grouped by type.
- *
  */
 function bootstrap_status_messages($variables) {
   $display = $variables['display'];
@@ -66,12 +65,21 @@ function bootstrap_status_messages($variables) {
     'warning' => t('Warning message'),
   );
 
+  // Map Drupal message types to their corresponding Bootstrap classes.
+  // @see http://twitter.github.com/bootstrap/components.html#alerts
+  $status_class = array(
+    'status' => 'success',
+    'error' => 'error',
+    'warning' => 'info',
+  );
+
   foreach (drupal_get_messages($display) as $type => $messages) {
-    $output .= "<div class=\"alert alert-block alert-$type\">\n";
+    $class = (isset($status_class[$type])) ? ' alert-' . $status_class[$type] : '';
+    $output .= "<div class=\"alert alert-block$class\">\n";
     $output .= "  <a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a>\n";
 
     if (!empty($status_heading[$type])) {
-      $output .= '<h4 class="alert-heading">' . $status_heading[$type] . "</h4>\n";
+      $output .= '<h2 class="element-invisible">' . $status_heading[$type] . "</h2>\n";
     }
 
     if (count($messages) > 1) {
@@ -92,44 +100,26 @@ function bootstrap_status_messages($variables) {
 
 function bootstrap_css_alter(&$css) {
   $theme_path = drupal_get_path('theme', 'bootstrap');
-  $files = array();
 
   $excludes = _bootstrap_alter(bootstrap_theme_get_info('exclude'), 'css');
-  $css = array_diff_key($css, $excludes);
 
   if (theme_get_setting('cdn_bootstrap')){
-    $files[]= array(
-      'url' => 'http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css',
-      'type' => 'external'
-      );
+    //first add the existing bootstrap css to the exclude
+    $excludes[$theme_path . '/bootstrap/css/bootstrap.css'] = FALSE;
+    $excludes[$theme_path . '/bootstrap/css/bootstrap-responsive.css'] = FALSE ;
+    
+    //and then add the cdn css
+    $cdn_url ='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css';
+    $css[$cdn_url]['data'] = $cdn_url;
+    $css[$cdn_url]['type'] = 'external';
+    $css[$cdn_url]['every_page'] = TRUE;
+    $css[$cdn_url]['media'] = 'all';
+    $css[$cdn_url]['preprocess'] = TRUE;
+    $css[$cdn_url]['group'] = CSS_THEME;
+    $css[$cdn_url]['weight'] = -1;
+    $css[$cdn_url]['browsers'] = array('IE' => TRUE, '!IE' => TRUE);
   }
-  else {
-
-    $files[]= array (
-      'url' => $theme_path . '/bootstrap/css/bootstrap.css',
-      'type' => 'file',
-    );
-
-    $files[]= array (
-      'url' => $theme_path . '/bootstrap/css/bootstrap-responsive.css',
-      'type' => 'file',
-    );
-
-  }
-
-  foreach ($files as $file) {
-    if (!isset($css[$file['url']])) {
-      $css[$file['url']]['data'] = $file['url'];
-      $css[$file['url']]['type'] = $file['type'];
-      $css[$file['url']]['every_page'] = TRUE;
-      $css[$file['url']]['media'] = 'all';
-      $css[$file['url']]['preprocess'] = TRUE;
-      $css[$file['url']]['group'] = 0;
-      $css[$file['url']]['weight'] = 0;
-      $css[$file['url']]['browsers'] = array('IE' => TRUE, '!IE' => TRUE);
-    }
-  }
-
+  $css = array_diff_key($css, $excludes);
 }
 
 /**
