@@ -24,9 +24,9 @@ h1, h2, h3, h4 {
   border: 1px solid #aaaaaa;
   padding: 10px;
   font-size: 30px;
-  height: 45px;
-  width: 45px;
-  line-height: 45px;
+  height: 55px;
+  width: 55px;
+  line-height: 1.1em;
   display: inline-block;
   text-align: center;
   -webkit-border-radius: 10px;
@@ -36,7 +36,7 @@ h1, h2, h3, h4 {
   border-radius: 10px;
 }
 
-/* line 61, ../sass/cutshort.scss */
+/* line 62, ../sass/cutshort.scss */
 .separator {
   line-height: 45px;
   position: relative;
@@ -46,7 +46,7 @@ h1, h2, h3, h4 {
   line-height: 45px;
 }
 
-/* line 73, ../sass/cutshort.scss */
+/* line 74, ../sass/cutshort.scss */
 #block-views-shortcut-block .views-row {
   border: 1px solid #aaaaaa;
   -webkit-border-radius: 10px;
@@ -57,26 +57,32 @@ h1, h2, h3, h4 {
   padding: 10px 20px 20px 20px;
   margin: 20px 0;
 }
-/* line 74, ../sass/cutshort.scss */
+/* line 75, ../sass/cutshort.scss */
 #block-views-shortcut-block .views-row h3 {
   margin: 0;
 }
-/* line 81, ../sass/cutshort.scss */
+/* line 82, ../sass/cutshort.scss */
 #block-views-shortcut-block .views-row .views-field-created {
   color: #aaaaaa;
   margin-bottom: 10px;
 }
-/* line 85, ../sass/cutshort.scss */
+/* line 86, ../sass/cutshort.scss */
 #block-views-shortcut-block .views-row .views-field-field-shortcut-application {
   margin-top: 10px;
 }
 
-/* line 94, ../sass/cutshort.scss */
+/**
+ * Shortcut node.
+ */
+/* line 97, ../sass/cutshort.scss */
 .node-type-shortcut .field-name-field-shortcut-application {
   margin-top: 10px;
 }
 
-/* line 102, ../sass/cutshort.scss */
+/**
+ * Application node.
+ */
+/* line 108, ../sass/cutshort.scss */
 .node-type-application .view-id-application .views-row {
   border: 1px solid #aaaaaa;
   -webkit-border-radius: 10px;
@@ -100,23 +106,26 @@ h1, h2, h3, h4 {
 .node-type-application .view-id-application .views-row .views-field-field-shortcut-application {
   margin-top: 10px;
 }
-/* line 104, ../sass/cutshort.scss */
+/* line 110, ../sass/cutshort.scss */
 .node-type-application .view-id-application .views-row h4 {
   margin-bottom: 10px;
 }
 
-/* line 112, ../sass/cutshort.scss */
+/**
+ * Key node.
+ */
+/* line 121, ../sass/cutshort.scss */
 .node-type-key .field-name-field-key-symbol {
   font-size: 100px;
   line-height: 100px;
   color: #dddddd;
   float: right;
 }
-/* line 118, ../sass/cutshort.scss */
+/* line 127, ../sass/cutshort.scss */
 .node-type-key .view-id-key {
   margin-top: 60px;
 }
-/* line 120, ../sass/cutshort.scss */
+/* line 129, ../sass/cutshort.scss */
 .node-type-key .view-id-key .views-row {
   border: 1px solid #aaaaaa;
   -webkit-border-radius: 10px;
@@ -140,17 +149,24 @@ h1, h2, h3, h4 {
 .node-type-key .view-id-key .views-row .views-field-field-shortcut-application {
   margin-top: 10px;
 }
-/* line 122, ../sass/cutshort.scss */
+/* line 131, ../sass/cutshort.scss */
 .node-type-key .view-id-key .views-row h4 {
   margin-bottom: 10px;
 }
-/* line 125, ../sass/cutshort.scss */
+/* line 134, ../sass/cutshort.scss */
 .node-type-key .view-id-key .views-row.views-row-first {
   margin-top: 10px;
 }
 
-/* line 133, ../sass/cutshort.scss */
+/**
+ * List of Keys.
+ */
+/* line 144, ../sass/cutshort.scss */
 #block-views-key-block-1 .views-row {
   float: left;
   margin-right: 10px;
+}
+/* line 148, ../sass/cutshort.scss */
+#block-views-key-block-1 a {
+  display: block;
 }

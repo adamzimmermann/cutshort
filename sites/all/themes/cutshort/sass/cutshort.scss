@@ -47,12 +47,13 @@ h1, h2, h3, h4 {
 
 
 .key {
+	$size: 55px;
 	border: 1px solid $grey-medium;
 	padding: 10px;
 	font-size: 30px;
-	height: 45px;
-	width: 45px;
-	line-height: 45px;
+	height: $size;
+	width: $size;
+	line-height: 1.1em;
 	display: inline-block;
 	text-align: center;
 	@include border-radius(10px);
@@ -88,7 +89,9 @@ h1, h2, h3, h4 {
 	}
 }
 
-
+/**
+ * Shortcut node.
+ */
 .node-type-shortcut {
 
 	.field-name-field-shortcut-application {
@@ -97,6 +100,9 @@ h1, h2, h3, h4 {
 }
 
 
+/**
+ * Application node.
+ */
 .node-type-application {
 	.view-id-application {
 		.views-row {
@@ -108,6 +114,9 @@ h1, h2, h3, h4 {
 	}
 }
 
+/**
+ * Key node.
+ */
 .node-type-key {
 	.field-name-field-key-symbol {
 		font-size: 100px;
@@ -128,10 +137,15 @@ h1, h2, h3, h4 {
 		}
 	}
 }
-
+/**
+ * List of Keys.
+ */
 #block-views-key-block-1 {
 	.views-row {
 		float: left;
 		margin-right: 10px;
+	}
+	a {
+		display: block;
 	}
 }
